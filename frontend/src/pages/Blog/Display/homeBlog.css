@@ -1,0 +1,46 @@
+.homeblog-container {
+    width: 80%; /* Adjust the width as needed */
+    margin: 0 auto; /* Centers the container */
+    text-align: left; /* Aligns text to the left */
+  }
+  
+  .blog-card {
+    width: 100%; /* Ensures the card takes full width */
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .blog-title-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left; /* Ensures title is left-aligned */
+  }
+  
+  
+  .blog-image {
+    width: 100%; /* Ensure full width */
+    height: 40vh; /* Increase height to 40% of the viewport height */
+    max-height: 350px; /* Adjust max height for better fit */
+    object-fit: cover; /* Crop images properly */
+    border-radius: 10px;
+  }
+  
+  
+  
+  .blog-description {
+    white-space: pre-line; /* Keeps new lines */
+    font-size: 1rem;
+    text-align: left; /* Ensures description is left-aligned */
+  }
+  
+  .blog-email {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #555;
+    text-align: left; /* Ensures email is left-aligned */
+  }
+  

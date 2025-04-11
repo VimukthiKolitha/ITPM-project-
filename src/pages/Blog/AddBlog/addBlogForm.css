@@ -1,0 +1,81 @@
+/* Outer container with an invisible border and shadow (excluding Navbar) */
+.page-cover {
+    width: 50%; /* Set to 100% initially */
+    max-width: 400px; /* Increased max-width to 400px */
+    margin: 30px auto; /* Centers it */
+    padding: 25px;
+    background: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0); /* Invisible border */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Small shadow */
+    border-radius: 12px; /* Rounded corners */
+}
+
+/* Centered Form */
+.Addblog-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%; /* Full width of the container */
+    margin: auto;
+}
+
+.Addblog-form label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    display: block;
+    align-self: flex-start; /* Aligns labels to the left */
+    margin-top: 10px;
+}
+/* Input and textarea styles */
+.Addblog-form input, 
+.Addblog-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #090909; /* Black border */
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* Hover & focus effects */
+.Addblog-form input:focus,
+.Addblog-form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 6px rgba(0, 123, 255, 0.5);
+}
+
+/* Textarea settings */
+.Addblog-form textarea {
+    resize: vertical; /* Allows resizing vertically */
+    height: 100px; /* Default height */
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #090909; /* Black border */
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+.Addblog-title{
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}

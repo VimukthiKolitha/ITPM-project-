@@ -1,0 +1,143 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .payment-manager-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .manager-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #6200ea;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Reduce font size for Payment Details column */
+  td.small-text {
+    font-size: 12px;
+    word-break: break-word;
+  }
+  
+  /* Input and Select Styles */
+  input,
+  select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  select {
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Button Styles */
+  button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.edit {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  button.edit:hover {
+    background-color: #e0a800;
+  }
+  
+  button.save {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  button.save:hover {
+    background-color: #218838;
+  }
+  
+  button.cancel {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  button.cancel:hover {
+    background-color: #c82333;
+  }
+  
+  /* Status Colors */
+  td[data-status="Pending"] {
+    color: #ff9800;
+    font-weight: bold;
+  }
+  
+  td[data-status="Completed"] {
+    color: #4caf50;
+    font-weight: bold;
+  }
+  
+  td[data-status="Failed"] {
+    color: #f44336;
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  }
+  

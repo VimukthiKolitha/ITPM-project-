@@ -3,7 +3,11 @@ import {assets} from '../assets/assets'
 import { AdminContext } from "../context/adminContext";
 import  axios from 'axios'
 import { toast } from "react-toastify";
+import { DoctorContex } from "../context/DoctorContext";
 
+
+//login to admoin = admin@suwa.com
+//password = vimu1234
 const Login =() =>{
 
      const [state,setState] = useState('Admin')
@@ -11,6 +15,9 @@ const Login =() =>{
      const [password,setPassword] = useState('')
 
      const {setAToken,backendUrl} = useContext(AdminContext)
+     const {setDToken} = useContext(DoctorContex)
+
+     const [showPassword, setShowPassword] = useState(false);
 
      const onSubmitHandler = async (event) => {
         event.preventDefault();
@@ -22,6 +29,18 @@ const Login =() =>{
                 if (data.success) {
                     localStorage.setItem('aToken',data.token)
                     setAToken(data.token); // Save token in context
+                } 
+                else 
+                {
+                    toast.error(data.message)
+                }
+            }else
+            {
+                const {data} = await axios.post('http://localhost:4000/api/doctor' + '/login',{email,password})
+                if (data.success) {
+                    localStorage.setItem('dToken',data.token)
+                    setDToken(data.token); // Save token in context
+                    console.log(data.token)
                 } 
                 else 
                 {
@@ -46,16 +65,26 @@ const Login =() =>{
                         <p>Email</p>
                         <input onChange={(e)=>setEmail(e.target.value)} value={email} className="border border-[#DADADA] rounded w-full p-2 mt-1" type="email" required/>
                     </div>
-                    <div className="w-full">
-                        <p>Password</p>
-                        <input onChange={(e)=>setPassword(e.target.value)} value={password} className="border border-[#DADADA] rounded w-full p-2 mt-1"  type="password" required/>
-                    </div>
+                    <input
+                        onChange={(e) => setPassword(e.target.value)}
+                         value={password}
+                         className="border border-[#DADADA] rounded w-full p-2 mt-1 pr-10"
+                        type={showPassword ? "text" : "password"}
+                         required
+                    />
+                <button
+                  type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                       className="absolute right-3 top-9 text-sm text-gray-600"
+           >
+                  {showPassword ? "Hide" : "Show"}
+            </button>
                     <button
-    className="bg-primary text-white w-full py-2 rounded-md text-base"
-    onClick={onSubmitHandler} // Attach function to button
->
-    Login
-</button>
+                className="bg-primary text-white w-full py-2 rounded-md text-base"
+                onClick={onSubmitHandler} // Attach function to button
+           >
+              Login
+           </button>
                     {
                         state === 'Admin'
                         ?<p>Doctor Login? <span className="text-primary underline cursor-pointer" onClick={() =>setState('Doctor')}>Click here</span></p>

@@ -30,7 +30,6 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/payment', paymentRouter);
 app.use('/api/AI',AiRoute)
 
-//localhost:4000/api/admin/add-doctor
 
 app.get('/',(req,res)=>{
     res.send('API working fine')

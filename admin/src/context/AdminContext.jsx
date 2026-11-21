@@ -1,113 +1,133 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
-    const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '');
+    // Initialize token state from localStorage
+    const [aToken, setAToken] = useState(localStorage.getItem('aToken') || '');
     const [doctors, setDoctors] = useState([]);
-    const [appointments,setAppointments] = useState([]);
-    const [dashData,setDashdata] = useState(false)
+    const [appointments, setAppointments] = useState([]);
+    const [dashData, setDashdata] = useState(false);
 
+    // Base backend URL (e.g., http://localhost:4000)
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    console.log("Backend URL:", backendUrl);
 
+    // Automatically sync aToken with localStorage on state changes
+    useEffect(() => {
+        if (aToken) {
+            localStorage.setItem('aToken', aToken);
+        } else {
+            localStorage.removeItem('aToken');
+        }
+    }, [aToken]);
+
+    // Fetch all doctors list
     const getAllDoctors = async () => {
         try {
             const { data } = await axios.post(
-                `${backendUrl}/all-doctors`, 
+                `${backendUrl}/api/admin/all-doctors`, 
                 {}, 
-                { headers: { aToken } }
+                { headers: { atoken: aToken } }
             );
 
             if (data.success) {
                 setDoctors(data.doctors);
-                console.log(data.doctors);
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Error fetching doctors");
+            toast.error(error.response?.data?.message || error.message);
         }
-    }
+    };
 
-    const changeAvailability = async(docId) =>{
+    // Toggle doctor availability state
+    const changeAvailability = async (docId) => {
         try {
-            const {data} = await axios.post(backendUrl + '/change-availability',{docId},{headers:{aToken}})
-            if(data.success)
-            {
-                toast.success(data.message)
-                getAllDoctors()
-            }
-            else
-            {
-               toast.error(data.message)
-            }
+            const { data } = await axios.post(
+                `${backendUrl}/api/admin/change-availability`,
+                { docId },
+                { headers: { atoken: aToken } }
+            );
 
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Error fetching doctors");
-        }
-    }
-
-    const getAllAppointments = async () =>{
-        try {
-            const {data} = await axios.get(backendUrl + '/appointments',{headers:{aToken}})
-            if(data.success)
-            {
-                setAppointments(data.appointments)
-                console.log(data.appointments);
-            }else{
-                toast.error(data.message)
+            if (data.success) {
+                toast.success(data.message);
+                getAllDoctors();
+            } else {
+                toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.response?.data?.message || error.message);
         }
-    }
+    };
 
-    const cancelAppointment = async (appointmentId) =>{
-
+    // Fetch all patient appointments
+    const getAllAppointments = async () => {
         try {
-            const {data} = await axios.post(backendUrl + '/cancel-appointment',{appointmentId},{headers:{aToken}})
-    
-            if(data.success)
-            {
-                toast.success(data.message)
-                getAllAppointments()
-            }else{
-                toast.error(error.message)
+            const { data } = await axios.get(
+                `${backendUrl}/api/admin/appointments`,
+                { headers: { atoken: aToken } }
+            );
+
+            if (data.success) {
+                setAppointments(data.appointments);
+            } else {
+                toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.response?.data?.message || error.message);
         }
-     }
+    };
 
-    const getDashData = async () =>{
+    // Cancel an appointment by ID
+    const cancelAppointment = async (appointmentId) => {
         try {
-            const {data} = await axios.get(backendUrl + '/dashboard',{headers:{aToken}})
+            const { data } = await axios.post(
+                `${backendUrl}/api/admin/cancel-appointment`,
+                { appointmentId },
+                { headers: { atoken: aToken } }
+            );
 
-            if(data.success)
-            {
-                setDashdata(data.dashData)
-                console.log(data.dashData)
-            }else{
-                toast.error(error.message)
+            if (data.success) {
+                toast.success(data.message);
+                getAllAppointments();
+            } else {
+                toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.response?.data?.message || error.message);
         }
-    } 
+    };
+
+    // Fetch admin dashboard metrics
+    const getDashData = async () => {
+        try {
+            const { data } = await axios.get(
+                `${backendUrl}/api/admin/dashboard`,
+                { headers: { atoken: aToken } }
+            );
+
+            if (data.success) {
+                setDashdata(data.dashData);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || error.message);
+        }
+    };
 
     const value = {
         aToken, setAToken,
         backendUrl, doctors,
-        getAllDoctors,changeAvailability,
-        appointments,setAppointments,
+        getAllDoctors, changeAvailability,
+        appointments, setAppointments,
         getAllAppointments,
         cancelAppointment,
-        getDashData,dashData
-    }   
-    
+        getDashData, dashData
+    };
+
     return (
         <AdminContext.Provider value={value}>
             {props.children}

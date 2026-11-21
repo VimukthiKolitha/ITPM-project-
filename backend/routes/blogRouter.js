@@ -1,4 +1,3 @@
-// routes/blogRouter.js
 import express from "express";
 import {
   addBlog,
@@ -11,7 +10,7 @@ import authAdmin from "../middlewares/authAdmin.js";
 
 const blogRouter = express.Router();
 
-blogRouter.post("/add", authAdmin, upload.single("image"), addBlog); //Corrected route
+blogRouter.post("/add", authAdmin, upload.single("image"), addBlog);
 blogRouter.get("/all", getAllBlogs);
 blogRouter.put("/update/:id", upload.single("image"), updateBlog);
 blogRouter.delete("/delete/:id", deleteBlog);

@@ -1,0 +1,30 @@
+/* blogs.css */
+.blog-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.blogs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.blogs-page h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.blogs-page p {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}

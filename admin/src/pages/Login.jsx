@@ -1,98 +1,104 @@
 import React, { useContext, useState } from "react";
-import {assets} from '../assets/assets'
-import { AdminContext } from "../context/adminContext";
-import  axios from 'axios'
+import { assets } from '../assets/assets';
+import { AdminContext } from "../context/AdminContext";
+import axios from 'axios';
 import { toast } from "react-toastify";
 import { DoctorContex } from "../context/DoctorContext";
 
+const Login = () => {
+    const [state, setState] = useState('Admin');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-//login to admoin = admin@suwa.com
-//password = vimu1234
-const Login =() =>{
+    const { setAToken, backendUrl } = useContext(AdminContext);
+    const { setDToken } = useContext(DoctorContex);
 
-     const [state,setState] = useState('Admin')
-     const [email,setEmail] = useState('')
-     const [password,setPassword] = useState('')
-
-     const {setAToken,backendUrl} = useContext(AdminContext)
-     const {setDToken} = useContext(DoctorContex)
-
-     const [showPassword, setShowPassword] = useState(false);
-
-     const onSubmitHandler = async (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
-    
+
         try {
             if (state === "Admin") {
-                const { data } = await axios.post(backendUrl + "/login", {email,password});
-    
+                // FIXED: Changed /admin/login to /api/admin/login
+                const { data } = await axios.post(backendUrl + "/api/admin/login", { email, password });
+
                 if (data.success) {
-                    localStorage.setItem('aToken',data.token)
-                    setAToken(data.token); // Save token in context
-                } 
-                else 
-                {
-                    toast.error(data.message)
+                    localStorage.setItem('aToken', data.token);
+                    setAToken(data.token);
+                    toast.success("Admin logged in successfully");
+                } else {
+                    toast.error(data.message);
                 }
-            }else
-            {
-                const {data} = await axios.post('http://localhost:4000/api/doctor' + '/login',{email,password})
+            } else {
+                const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password });
+                
                 if (data.success) {
-                    localStorage.setItem('dToken',data.token)
-                    setDToken(data.token); // Save token in context
-                    console.log(data.token)
-                } 
-                else 
-                {
-                    toast.error(data.message)
+                    localStorage.setItem('dToken', data.token);
+                    setDToken(data.token);
+                    toast.success("Doctor logged in successfully");
+                } else {
+                    toast.error(data.message);
                 }
             }
         } catch (error) {
-            console.error(
-                "Login error:",
-                error.response ? error.response.data : error.message
-            );
+            console.error("Login error:", error.response ? error.response.data : error.message);
+            toast.error(error.response?.data?.message || "Login failed");
         }
     };
-    
 
-    return(
+    return (
         <div>
-            <form className="min-h-[80vh] flex items-center">
-                <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-                    <p className="text-2xl font-semibold m-auto"><span className="text-primary">{state}</span>Login</p>
+            <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
+                <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
+                    <p className="text-2xl font-semibold m-auto">
+                        <span className="text-primary">{state} </span>Login
+                    </p>
+
                     <div className="w-full">
                         <p>Email</p>
-                        <input onChange={(e)=>setEmail(e.target.value)} value={email} className="border border-[#DADADA] rounded w-full p-2 mt-1" type="email" required/>
+                        <input 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            value={email} 
+                            className="border border-[#DADADA] rounded w-full p-2 mt-1" 
+                            type="email" 
+                            required 
+                        />
                     </div>
-                    <input
-                        onChange={(e) => setPassword(e.target.value)}
-                         value={password}
-                         className="border border-[#DADADA] rounded w-full p-2 mt-1 pr-10"
-                        type={showPassword ? "text" : "password"}
-                         required
-                    />
-                <button
-                  type="button"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                       className="absolute right-3 top-9 text-sm text-gray-600"
-           >
-                  {showPassword ? "Hide" : "Show"}
-            </button>
+
+                    <div className="w-full relative">
+                        <p>Password</p>
+                        <input
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            className="border border-[#DADADA] rounded w-full p-2 mt-1 pr-12"
+                            type={showPassword ? "text" : "password"}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 top-8 text-sm text-gray-600"
+                        >
+                            {showPassword ? "Hide" : "Show"}
+                        </button>
+                    </div>
+
                     <button
-                className="bg-primary text-white w-full py-2 rounded-md text-base"
-                onClick={onSubmitHandler} // Attach function to button
-           >
-              Login
-           </button>
-                    {
-                        state === 'Admin'
-                        ?<p>Doctor Login? <span className="text-primary underline cursor-pointer" onClick={() =>setState('Doctor')}>Click here</span></p>
-                        :<p>Admin Login? <span className="text-primary underline cursor-pointer" onClick={() =>setState('Admin')}>Click here</span></p>
-                    }
+                        type="submit"
+                        className="bg-primary text-white w-full py-2 rounded-md text-base mt-2"
+                    >
+                        Login
+                    </button>
+
+                    {state === 'Admin' ? (
+                        <p>Doctor Login? <span className="text-primary underline cursor-pointer" onClick={() => setState('Doctor')}>Click here</span></p>
+                    ) : (
+                        <p>Admin Login? <span className="text-primary underline cursor-pointer" onClick={() => setState('Admin')}>Click here</span></p>
+                    )}
                 </div>
             </form>
         </div>
-    )
-}
-export default Login
+    );
+};
+
+export default Login;

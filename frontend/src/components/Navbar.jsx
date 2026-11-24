@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { assets } from '../assets/assets';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import './Navbar.css';
+import './navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
